@@ -34,7 +34,7 @@ jobs:
         run: grep "&copy;" README.md
 
       - name: Liability
-        run: grep "Liability" README.md
+        run: grep "LIABILITY" LICENSE
 
   ensure-git-artifacts:
     runs-on: ubuntu-latest
