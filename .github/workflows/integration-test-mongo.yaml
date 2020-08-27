@@ -1,0 +1,37 @@
+name: Integration Test against a MongoDB Service
+on:
+  workflow_dispatch:
+    
+
+jobs:
+  runner-job:
+    
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: get mongo shell
+        run: |          
+          wget https://fastdl.mongodb.org/tools/db/mongodb-database-tools-ubuntu1804-x86_64-100.1.1.tgz
+          tar zxvf mongodb-database-tools-ubuntu1804-x86_64-100.1.1.tgz           
+      
+      - name: Insert data
+        working-directory: mongodb-database-tools-ubuntu1804-x86_64-100.1.1/bin
+        run: echo '{"name":"marklar"}' | mongoimport --host mongodb-service --db test --collection demo 
+            
+      
+      - name: Read data into file
+        working-directory: mongodb-database-tools-ubuntu1804-x86_64-100.1.1/bin
+        run: mongoexport --host mongodb-service --db test --collection demo > ../../demo-collection.json
+      
+      - name: Test the data
+        run: grep "marklar" demo-collection.json
+
+    services:
+      # Label used to access the service container
+      mongodb-service:
+        # Docker Hub image
+        image: mongo:latest
+        #
+        ports:
+          # Opens tcp port 6379 on the host and service container
+          - 27017:27017
