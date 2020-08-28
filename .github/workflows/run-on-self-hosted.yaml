@@ -1,0 +1,17 @@
+name: Run On Self-Hosted
+
+on:
+  workflow_dispatch:
+
+jobs:
+  Do Something:
+    runs-on: ['nuri-laptop','self-hosted']
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Ensure LICENSE
+        run: test -f "LICENSE"
+
+      - name: Ensure README
+        run: test -f "README.md"
