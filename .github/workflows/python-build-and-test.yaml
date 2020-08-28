@@ -1,9 +1,11 @@
 name: Python Build and Test
 
 on: 
+  workflow_dispatch:
+    
   push:
     paths:
-      - py
+      - 'py/**'
 
 jobs:
   build:
