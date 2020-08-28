@@ -5,7 +5,7 @@ on:
 
 jobs:
   do_something_elsewhere:
-    runs-on: ['nuri-laptop','self-hosted']
+    runs-on: ['self-hosted']
 
     steps:
       - uses: actions/checkout@v2
