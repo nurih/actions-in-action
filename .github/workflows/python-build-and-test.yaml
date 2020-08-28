@@ -1,29 +1,38 @@
 name: Python Build and Test
 
-on: 
+on:
   workflow_dispatch:
-    
+
   push:
     paths:
-      - 'py/**'
+      - "py/**"
 
 jobs:
   build:
-        
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Set up Python 3.x
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.7' 
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.7"
 
-    - name: Install Requirements
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r py/requirements.txt
-    
-    - name: Unit Test
-      run: python -m unittest
+      - name: Install Requirements
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r py/requirements.txt
+
+      - name: Unit Test
+        run: python -m unittest discover -p "test_*.py"
+
+      - name: Integration Test
+        run: python -m unittest discover -p "integration_test_*.py"
+
+    services:
+      # set up mongo to perform integration test.
+      mongodb:
+        image: mongo:latest
+        ports:
+          - 27017:27017
